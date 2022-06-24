@@ -1,13 +1,27 @@
-import express from 'express';
+import express from "express";
+import dotenv from "dotenv";
+import {OAuth2Client} from "google-auth-library";
 
+
+dotenv.config();
+const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 const app = express();
-const port = 5000;
+app.use(express.json());
 
-// var usersRouter = require('./Routes/users.routes');
-// app.use('/users', usersRouter);
+const user = [];
 
+app.post('/api/google-login',async(req,res)=>{
+    const token = await client.verifyIdToken({
+        idToken : token,
+        audience : process.env.CLIENT_ID, 
+    });
+    const { name ,email,picture} = ticket.getPayload();
+    upsert(users,{name,email,picture });
+    res.status(201);
+    res.json({name,email,picture});
+});
 
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.listen(process.env.PORT|| 5000,()=>{
+    console.log(`Server is Ready at http://localhost:${process.env.PORT||5000}`);
+    
+});
