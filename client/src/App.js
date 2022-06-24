@@ -1,8 +1,21 @@
+import { useState } from "react";
+import Login from "./Pages/login";
+
 function App() {
+
+  const [loginData, setLoginData] = useState(
+    localStorage.getItem('loginData')? JSON.parse(localStorage.getItem('loginData')) : null
+  );
+
+  const setLoginState = (loginData) => {
+    setLoginData(loginData);
+    localStorage.setItem('loginData', JSON.stringify(loginData));
+  }
+
   return (
-    <>
-    <h1>Hello</h1>
-    </>
+    <div className="App">
+        <Login setLoginState = {setLoginState}></Login>
+    </div>
   );
 }
 
