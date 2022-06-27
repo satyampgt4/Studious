@@ -13,10 +13,11 @@ export default function loginWithGoogle({setLoginState}) {
 
     const loginData = await res.json();
     setLoginState(loginData);
+    console.log("success")
   }
 
   const handleFailure = (result) => {
-    console.log(result);
+    console.log("fail");
   }
 
   return (
@@ -26,6 +27,8 @@ export default function loginWithGoogle({setLoginState}) {
         onSuccess={handleLogin}
         onFailure={handleFailure}
         cookiePolicy={'single_host_origin'}
+        uxMode={'redirect'}
+        redirectUri={'http://localhost:3000'}
     />
   )
 }
