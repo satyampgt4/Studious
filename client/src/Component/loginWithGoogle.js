@@ -1,34 +1,28 @@
-import React from 'react'
-import { GoogleLogin } from 'react-google-login'
+import React, { useEffect } from 'react'
+import jwt_decode from 'jwt-decode'
 
-export default function loginWithGoogle({setLoginState}) {
+export default function LoginWithGoogle({setLoginState}) {
 
-  const handleLogin = async (googleData) => {
-    
-    const res = await fetch('/google-login' , {
-        method: 'POST',
-        body: JSON.stringify({token: googleData.tokenId }),
-        headers :{ 'Content-Type' : 'application/json'}
-      });
-
-    const loginData = await res.json();
-    setLoginState(loginData);
-    console.log("success")
+  const handleLogin = (googleData) => {
+     setLoginState(googleData);
+     const userObj = jwt_decode(googleData.credential);
+     console.log(userObj);
   }
+  
+  useEffect(()=>{
+    /*global google*/
+    google.accounts.id.initialize({
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+      callback: handleLogin
+    });
 
-  const handleFailure = (result) => {
-    console.log("fail");
-  }
-
+    google.accounts.id.renderButton(
+      document.querySelector("#signInDiv"),
+      {theme: 'outline', size: 'large'}
+    );
+  }, []);
+ 
   return (
-    <GoogleLogin
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-        buttonText="Log in With Google"
-        onSuccess={handleLogin}
-        onFailure={handleFailure}
-        cookiePolicy={'single_host_origin'}
-        uxMode={'redirect'}
-        redirectUri={'http://localhost:3000'}
-    />
+    <div id='signInDiv'></div>
   )
 }
