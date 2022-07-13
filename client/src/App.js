@@ -1,13 +1,21 @@
-import './App.css';
-import Layout from './Pages/Layout';
-import UpperNavbar from './Component/UpperNavbar';
+import { useState } from "react";
+import Login from "./Pages/login";
 
 function App() {
+
+  const [loginData, setLoginData] = useState(
+    localStorage.getItem('loginData')? JSON.parse(localStorage.getItem('loginData')) : null
+  );
+
+  const setLoginState = (loginData) => {
+    setLoginData(loginData);
+    localStorage.setItem('loginData', JSON.stringify(loginData));
+  }
+
   return (
-    <>
-    <UpperNavbar/>
-    <Layout/>
-    </>
+    <div className="App">
+        <Login setLoginState = {setLoginState}></Login>
+    </div>
   );
 }
 
