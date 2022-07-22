@@ -7,7 +7,8 @@ const router = express.Router();
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 const user = [];
 
-router.post('/',async(req,res)=>{
+router.post('*',async(req,res)=>{
+    
     const token = await client.verifyIdToken({
         idToken : token,
         audience : process.env.CLIENT_ID, 

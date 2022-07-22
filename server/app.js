@@ -22,11 +22,22 @@ app.use(cookieParser());
 // }));
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    if (req.method === 'OPTION'){
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE')
+        return res.status(200).json({});
+    }
+})
 const db = require("./database/database");
 const auth = require("./controller/routing/auth")
 const user = require("./controller/api/user")
 
-app.use('/google-login',auth);
-app.use('/user',user);
+app.use('/google-login', auth);
+app.use('/user', user);
 
 module.exports = app;
